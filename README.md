@@ -40,22 +40,22 @@ set grid=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehgrid.grd
 set grad=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehgrad.grad 
 set cpt=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehcolor.cpt
  
-gmt grdimage $grid -I$grad -R -JM -C$cpt -K -O -P >> $output
+gmt grdimage $grid -I$grad -R -JM -C$cpt -K -O >> $output
  
 # Generate coast line of an area
-gmt pscoast -R -JM -S -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -O -K -P >> $output
+gmt pscoast -R -JM -S -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -K -O >> $output
  
 # Plot a multiple symbol
-awk -F',' 'NR!=1 {print $3, $2}' earthquake_aceh.csv | gmt psxy -R -JM -K -O -Sc0.5  -Wblack -Gred >> $output
+awk -F',' 'NR!=1 {print $3, $2}' earthquake_aceh.csv | gmt psxy -R -JM -Sc0.5  -Wblack -Gred -K -O >> $output
  
 # Plot a line
-awk -F',' 'NR!=1 {print $2, $3}' aceh_segment_fault.csv | gmt psxy -R -JM -K -O -W1,blue >> $output
+awk -F',' 'NR!=1 {print $2, $3}' aceh_segment_fault.csv | gmt psxy -R -JM -W1,blue -K -O >> $output
+
+# Plot Colorbar
+gmt psscale -C$cpt -Dx0c/-1.5c+w10c/0.5c+h -Bxa450f+l"Elevation" -By+lm -G0/3000 -K -O >> $output
  
 # Plot Inset Map
-gmt pscoast -R94/100/2/7 -JM4.0 -B0ewns -X5.9 -Y0.1 -Dh -W0.2 -K -O -G224/240/255 -Sgrey >> $output
- 
-# Plot Colorbar
-gmt psscale -C$cpt -Dx0c/-1.5c+w10c/0.5c+h -Bxa450f+l"Elevation" -By+lm -G0/3000 -O -K >> $output
+gmt pscoast -R94/100/2/7 -JM4.0 -B0ewns -X5.9 -Y0.1 -Dh -W0.2 -G224/240/255 -Sgrey -K -O >> $output
  
 # Plot square box as area sign
 rm box1.dat # remove previous box1.dat
@@ -64,8 +64,9 @@ echo 97 4 >> box1.dat
 echo 97 6 >> box1.dat
 echo 95 6 >> box1.dat
 echo 95 4 >> box1.dat
-gmt psxy -R -JM -O -W0.8,red box1.dat >> $output
-     
+gmt psxy box1.dat -R -JM -W0.8,red -O >> $output
+
+# Convert postscript to png format
 psconvert $output -A+n -P -Tg
 ```
 
@@ -110,7 +111,7 @@ gmt psbasemap -JM10 -R$region -Xc -Yc -Ba0.5f0.1 -BWSne+tAceh -K > $output
 ```
 
 |Attribute|Information|
-|:--:|:--:|
+|--|--|
 | -J[Projection][size] | -J indicates to the projection map. There are two options of projection, Mercator (M) and Cartesian (X) |
 | -R[coordinate] | -R indicates to the coordinate that we use to create map. The coordinate format is min longitude/max longitude/min latitdue/max latitude |
 | -X[offset length/align] | -X indicates to the offset length in x-axis. You can adjust by its value or align format (c = center, a = shift the origin back to the original position after plotting, f = shift the origin relative to the fixed lower left, r = move the origin relative to its current location) |
@@ -138,7 +139,7 @@ gmt grdimage $grid -I$grad -R -JM -C$cpt -O -K -P >> $output
 ```
 
 |Attribute|Information|
-|:--:|:--:|
+|--|--|
 | $grid | Call the grid file that was assigned to grid variable |
 | -I[gradient file] | Call the gradient file that was assigned to grad variable |
 | -R | The coordinate attribute. This configuration will following the previous -R at the `psbasemap` that has been configured |
@@ -146,11 +147,66 @@ gmt grdimage $grid -I$grad -R -JM -C$cpt -O -K -P >> $output
 | -C[color file] | The color attribute. Call the color file that was assigned to `cpt` variable |
 | -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
 | -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
-| - P | -P indicates to portrait paper |
 | >> | Append the commands to the output |
 
-**_NOTE: IF YOU DON'T HAVE A GRID IMAGE YET, YOU CAN SKIP THIS COMMAND LINE AND GO TO THE NEXT COMMAND LINE_**
+**_NOTE: IF YOU DON'T HAVE A GRID IMAGE YET, YOU CAN SKIP THIS COMMAND LINE AND GO TO THE NEXT COMMAND LINE BELLOW_**
 
 ## PSCOAST
+
+Next, we plot a coastline of an area by using `pascoast` command as follows
+
+```
+# Generate coast line of an area
+gmt pscoast -R -JM -S -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -O -K -P >> $output
+```
+
+The `pscoast` also provides the attributes to create a map scale with by using -Lj attribute and create wind direction by using -Tdj attribute. 
+
+|Attribute | Information|
+|--|--|
+| -R | The coordinate attribute. This configuration will following the previous -R at the `psbasemap` that has been configured |
+| -JM | The projection attribute. This configuration will following the previous -JM at the `psbasemap` that has been configured |
+| -S[color] | Fill a color outside coastline |
+| -D[option] | Resolution of data where the options area are f = full, h = high, i = intermediate, l = low, and c = crude |
+| -W[size],[color] | Set shoreline color and size. Default color is black |
+| -Lj[position]+c[slon]+w[length][unit]+f+l+o[dx/dy] | To create amap scale. j = set position where the options are TR (Top Right), TL (Top Left), BL (Bottom Left) and BR (Bottom Right) |
+|| c[slon] or [slon/slong] = to specify scale origin for geographic projections, where the slat is latitude and the slong is longitude.  |
+|| w = to specify scale length and its unit. The unit options are e=cm, f=feet, M=miles and k=Km |
+|| f = Create fancy map scale. The default scale is plain |
+|| l = create a label of map scale |
+|| o = set the ooffset of map scale in x-direction and y-direction |
+| -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
+| -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
+| >> | Append the commands to the output |
+
+## PSXY
+
+The `psxy` command is used to plot a single symbol, multiple symbols and line in GMT. In this case, the symbol plot is represented to earthquake coordinate and the line plot is represented to fault line around Aceh area. The sympol plot and line plot by using `psxy` command are written as follows
+
+```
+# Plot a multiple symbol
+awk -F',' 'NR!=1 {print $3, $2}' earthquake_aceh.csv | gmt psxy -R -JM -Sc0.5  -Wblack -Gred -K -O >> $output
+ 
+# Plot a line
+awk -F',' 'NR!=1 {print $2, $3}' aceh_segment_fault.csv | gmt psxy -R -JM -W1,blue -K -O >> $output
+```
+
+To plot the symbol or line to a map, we use the logitude (x-axis) and latitude (y-axis). Becasue the symbol and line data are saved in a file as CSV format, we have to read these files by using `awk` command. For example, the file of `earthquake_aceh.csv` has a longitude coordinate at column 3 ($3) and latitude coordinate at column 2 ($2). The file of `aceh_segment_fault.csv` has a longitude coordinate at column 2 ($2) and latitude coordinate at column 3 ($3). The sign of $ is used to call a column and the NR!=1 is to reject the first row of the file. Sometimes, at the first line is column name. The `-F','` is used to read a CSV file format.
+
+|Attribute|Information|
+|--|--|
+| -R | The coordinate attribute. This configuration will following the previous -R at the `psbasemap` that has been configured |
+| -JM | The projection attribute. This configuration will following the previous -JM at the `psbasemap` that has been configured |
+| -S[symbol type][size] | Set a type of symbol and its size. There are several symbol types, such as g = octagon, h = hexagon, i = inverted triangle, n = pentagon, r = rectangle, t = triangle, s = square, c = circle, x = cross, y = y-dash, d = diamond  |
+| -W[size],[color] | Set outline color and size. Default color is black |
+| -G[color] | Set a symbol color. Default is black |
+| -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
+| -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
+| >> | Append the commands to the output |
+
+## PSSCALE
+
+
+
 
 
