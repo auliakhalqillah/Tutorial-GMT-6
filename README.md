@@ -33,7 +33,7 @@ set region=95/97/4/6
 set output=Aceh.ps
  
 # Generate base map
-gmt psbasemap -JM10 -R$region -Xc -Yc -Ba0.5f0.25WSne:.'Aceh': -K> $output
+gmt psbasemap -JM10 -R$region -Xc -Yc -Ba0.5f0.1 -BWSne+tAceh -K > $output
  
 # Plot grid image
 set grid=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehgrid.grd
@@ -99,4 +99,58 @@ set output=Aceh.ps
 ```
 
 to write a variable, we just use `set` command and following variable name. Next, we set an output variable to save a result. I write `Aceh.ps` as output file name in postscript format.
+
+## PSBASEMAP
+
+The first layer to create a map is frame map. To create a this, we use `psbasemap` command as follows
+
+```
+# Generate base map
+gmt psbasemap -JM10 -R$region -Xc -Yc -Ba0.5f0.1 -BWSne+tAceh -K > $output
+```
+
+|Attribute|Information|
+|:--:|:--:|
+| -J[Projection][size] | -J indicates to the projection map. There are two options of projection, Mercator (M) and Cartesian (X) |
+| -R[coordinate] | -R indicates to the coordinate that we use to create map. The coordinate format is min longitude/max longitude/min latitdue/max latitude |
+| -X[offset length/align] | -X indicates to the offset length in x-axis. You can adjust by its value or align format (c = center, a = shift the origin back to the original position after plotting, f = shift the origin relative to the fixed lower left, r = move the origin relative to its current location) |
+| -Y[offset length/align] | -Y indicates to the offset length in y-axis. You can adjust by its value or align format (c = center, a = shift the origin back to the original position after plotting, f = shift the origin relative to the fixed lower left, r = move the origin relative to its current location) |
+| -Ba[major step]f[minor step] | -B map boundary and axes attributes. The `a` is for major step and `f` is for minor step |
+| -B[axes]+t[title] | -B map boundary and axes attributes. The `axes` is for coordinate position of W (west)|S (south)|N (north)|E (east). Use capitalize alphabet to activate the its position. The `+t` is for map titile |
+| -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
+| > | To store all attributes from the left side to the output varibale that on the right side |
+
+## Plot Grid Image (GRDIMAGE)
+
+We create a good map by adding it with grid image either topography or bathymetry. In this case, We use topography file that has been downloaded from http://dwtkns.com/srtm/ as GeoTiff, then merged an dconverted to `grd` format. First, we have to set where the path of grid image file, gradient image file and color image file are and assign these files to each variable name as follows 
+
+```
+# Plot grid image
+set grid=/mnt/d/GMT/GMTCODE/TUTORIAL/acehgrid.grd
+set grad=/mnt/d/GMT/GMTCODE/TUTORIAL/acehgrad.grad 
+set cpt=/mnt/d/GMT/GMTCODE/TUTORIAL/acehcolor.cpt
+```
+
+To add the grid image into a map in GMT, type the following command
+
+```
+gmt grdimage $grid -I$grad -R -JM -C$cpt -O -K -P >> $output
+```
+
+|Attribute|Information|
+|:--:|:--:|
+| $grid | Call the grid file that was assigned to grid variable |
+| -I[gradient file] | Call the gradient file that was assigned to grad variable |
+| -R | The coordinate attribute. This configuration will following the previous -R at the `psbasemap` that has been configured |
+| -JM | The projection attribute. This configuration will following the previous -JM at the `psbasemap` that has been configured |
+| -C[color file] | The color attribute. Call the color file that was assigned to `cpt` variable |
+| -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
+| -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
+| - P | -P indicates to portrait paper |
+| >> | Append the commands to the output |
+
+**_NOTE: IF YOU DON'T HAVE A GRID IMAGE YET, YOU CAN SKIP THIS COMMAND LINE AND GO TO THE NEXT COMMAND LINE_**
+
+## PSCOAST
+
 
