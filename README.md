@@ -43,7 +43,7 @@ set cpt=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehcolor.cpt
 gmt grdimage $grid -I$grad -R -JM -C$cpt -K -O >> $output
  
 # Generate coast line of an area
-gmt pscoast -R -JM -S -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -K -O >> $output
+gmt pscoast -R -JM -Swhite -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -K -O >> $output
  
 # Plot a multiple symbol
 awk -F',' 'NR!=1 {print $3, $2}' earthquake_aceh.csv | gmt psxy -R -JM -Sc0.5  -Wblack -Gred -K -O >> $output
@@ -157,7 +157,7 @@ Next, we plot a coastline of an area by using `pascoast` command as follows
 
 ```
 # Generate coast line of an area
-gmt pscoast -R -JM -S -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -O -K -P >> $output
+gmt pscoast -R -JM -Swhite -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -O -K -P >> $output
 ```
 
 The `pscoast` also provides the attributes to create a map scale with by using -Lj attribute and create wind direction by using -Tdj attribute. 
