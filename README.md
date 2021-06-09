@@ -206,6 +206,48 @@ To plot the symbol or line to a map, we use the logitude (x-axis) and latitude (
 
 ## PSSCALE
 
+The `psscale` command is used to create a colorbar of a map based its color. We can type the following command to plot a colorbar
+
+```
+# Plot Colorbar
+gmt psscale -C$cpt -Dx0c/-1.5c+w10c/0.5c+h -Bxa450f+l"Elevation" -By+lm -G0/3000 -K -O >> $output
+```
+
+|Attribute|Information
+|--|--|
+|-C[color file] | Set a color file in CPT format |
+|-D[dx/dx]+w[length/width]+[orientation] | Set a position, length, width and orientation of colorbar scale. The unit options are c = centimeter, i = inches, p = pixels. The orientation options are h = horizontal and v = vertical |
+| -B[axes]a[major step]f[minor step]+l[label] | -B map boundary and axes attributes. The `axes` indicates where the position of scale value is (x, y or z),  `a` is for major step and `f` is for minor step |
+| -G[min scale/max scale] | Set a minimum and maximum colorbar scale value |
+| -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
+| -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
+
+## Plot a Inset Map
+
+The inset map is a sub-map that inside a main map. To plot this, we just create by using `pscoast` command as follows 
+
+```
+# Plot Inset Map
+gmt pscoast -R94/100/2/7 -JM4.0 -B0ewns -X5.9 -Y0.1 -Dh -W0.2 -G224/240/255 -Sgrey -K -O >> $output
+```
+and type the following command to plot a box inside inset map
+
+```
+# Plot square box as area sign
+rm box1.dat # remove previous box1.dat
+echo 95 4 > box1.dat
+echo 97 4 >> box1.dat
+echo 97 6 >> box1.dat
+echo 95 6 >> box1.dat
+echo 95 4 >> box1.dat
+gmt psxy box1.dat -R -JM -W0.8,red -O >> $output
+```
+
+## PSCONVERT
+
+
+
+
 
 
 
