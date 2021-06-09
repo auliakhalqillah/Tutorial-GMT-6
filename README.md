@@ -243,7 +243,36 @@ echo 95 4 >> box1.dat
 gmt psxy box1.dat -R -JM -W0.8,red -O >> $output
 ```
 
+|Attribute|Information|
+|--|--|
+| -R | The coordinate attribute. This configuration will following the previous -R at the `psbasemap` that has been configured |
+| -JM | The projection attribute. This configuration will following the previous -JM at the `psbasemap` that has been configured |
+| -W[size],[color] | Set shoreline color and size. Default color is black |
+| -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
+
 ## PSCONVERT
+
+The map can be converted to some formats, such as PNG or JPEG by using `psconvert` command. For example, to convert the map to PNG format, we can use the following command
+
+```
+# Convert postscript to png format
+psconvert $output -A+n -P -Tg
+```
+
+where the `-Tg` is for PNG fromat. You can use other formats from the following options
+
+|Options|Formtas|
+|--|--|
+| b | BMP |
+| e | EPS |
+| f | PDF |
+| F | Multi PDF |
+| j | JPEG |
+| g | PNG |
+| G | transparent PNG |
+| m | PPM |
+| s | SVG |
+| t | TIFF |
 
 
 
