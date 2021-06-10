@@ -306,6 +306,12 @@ where the `-Tg` is for PNG fromat. You can use other formats from the following 
 
 To get information for each layer, you could add the `-V` attribute in each layer like `-K -O -V >> $output`
 
+## SOURCES
+
+1. Grid Image (SRTM) has been downloaded from http://dwtkns.com/srtm/
+2. Earthquake data of Aceh area has been download from [USGS Earthquake Catalog](https://earthquake.usgs.gov/earthquakes/search/)
+3. Fault line has been generated from grid image
+
 
 
 
