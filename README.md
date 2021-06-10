@@ -155,6 +155,8 @@ gmt grdimage $grid -I$grad -R -JM -C$cpt -O -K -P >> $output
 
 **_NOTE: IF YOU DON'T HAVE A GRID IMAGE YET, YOU CAN SKIP THIS COMMAND LINE AND GO TO THE NEXT COMMAND LINE BELLOW_**
 
+**_To Download grid image of Aceh area, just click [here](https://drive.google.com/drive/folders/1SChGqgRf0b0fijXV8gAcOZU9V4rn76gf?usp=sharing)_**
+
 ## PSCOAST
 
 Next, we plot a coastline of an area by using `pascoast` command as follows
