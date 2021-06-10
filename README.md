@@ -14,7 +14,7 @@ sudo apt-get install csh
 
 ## Plot a Map
 
-<img align="center" width=458 height=500 src="https://github.com/auliakhalqillah/Tutorial-GMT-6/blob/main/Aceh.png">
+<img align="center" width=458 height=550 src="https://github.com/auliakhalqillah/Tutorial-GMT-6/blob/main/Aceh.png">
 
 The following code is a GMT code to produce a simple map with topography as shown in Figure 1 above. I will explain for each code line what that means are.
 
