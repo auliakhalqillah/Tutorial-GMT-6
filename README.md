@@ -282,7 +282,7 @@ The map can be converted to some formats, such as PNG or JPEG by using `psconver
 
 ```
 # Convert postscript to png format
-psconvert $output -A+n -P -Tg
+psconvert $output -A -P -Tg
 ```
 
 where the `-Tg` is for PNG fromat. You can use other formats from the following options
