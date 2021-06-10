@@ -14,7 +14,7 @@ sudo apt-get install csh
 
 ## Plot a Map
 
-<img align="center" width=358 height=400 src="https://auliakhalqillah.com/wp-content/uploads/2021/06/image-22.png">
+<img align="center" width=458 height=500 src="https://github.com/auliakhalqillah/Tutorial-GMT-6/blob/main/Aceh.png">
 
 The following code is a GMT code to produce a simple map with topography as shown in Figure 1 above. I will explain for each code line what that means are.
 
@@ -33,12 +33,12 @@ set region=95/97/4/6
 set output=Aceh.ps
  
 # Generate base map
-gmt psbasemap -JM10 -R$region -Xc -Yc -Ba0.5f0.1 -BWSne+tAceh -K > $output
+gmt psbasemap -JM10/10 -R$region -Xc -Yc -Ba0.5f0.1 -BWesN+tAceh -V -K > $output
  
 # Plot grid image
-set grid=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehgrid.grd
-set grad=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehgrad.grad 
-set cpt=/mnt/d/GMT/GMTCODE/GMTSCRIPT/TUTORIAL/acehcolor.cpt
+set grid=/mnt/d/GMT/GMTCODE/TUTORIAL/acehgrid.grd
+set grad=/mnt/d/GMT/GMTCODE/TUTORIAL/acehgrad.grad 
+set cpt=/mnt/d/GMT/GMTCODE/TUTORIAL/acehcolor.cpt
  
 gmt grdimage $grid -I$grad -R -JM -C$cpt -K -O >> $output
  
@@ -51,11 +51,15 @@ awk -F',' 'NR!=1 {print $3, $2}' earthquake_aceh.csv | gmt psxy -R -JM -Sc0.5  -
 # Plot a line
 awk -F',' 'NR!=1 {print $2, $3}' aceh_segment_fault.csv | gmt psxy -R -JM -W1,blue -K -O >> $output
 
+# author
+# awk -F',' 'NR!=1 {print $3, $2-0.05, $5}' earthquake_aceh.csv | gmt pstext -R -JM -F+f14 -V -K -O >> $output 
+echo "95.7 4.5 Created by Aulia Khalqillah (2021)" | gmt pstext -R -JM -Bwesn -F+f7,black -K -O >> $output
+
 # Plot Colorbar
 gmt psscale -C$cpt -Dx0c/-1.5c+w10c/0.5c+h -Bxa450f+l"Elevation" -By+lm -G0/3000 -K -O >> $output
  
 # Plot Inset Map
-gmt pscoast -R94/100/2/7 -JM4.0 -B0ewns -X5.9 -Y0.1 -Dh -W0.2 -G224/240/255 -Sgrey -K -O >> $output
+gmt pscoast -R94/100/2/7 -JM4.0/4.0 -Bwesn -X5.9 -Y0.1 -Dh -W0.2 -G224/240/255 -Sgrey -K -O >> $output
  
 # Plot square box as area sign
 rm box1.dat # remove previous box1.dat
@@ -66,8 +70,8 @@ echo 95 6 >> box1.dat
 echo 95 4 >> box1.dat
 gmt psxy box1.dat -R -JM -W0.8,red -O >> $output
 
-# Convert postscript to png format
-psconvert $output -A+n -P -Tg
+# Export ps to png file
+gmt psconvert $output -A -P -Tg
 ```
 
 ## What is #!/bin/csh ?
@@ -107,12 +111,12 @@ The first layer to create a map is frame map. To create a this, we use `psbasema
 
 ```
 # Generate base map
-gmt psbasemap -JM10 -R$region -Xc -Yc -Ba0.5f0.1 -BWSne+tAceh -K > $output
+gmt psbasemap -JM10/10 -R$region -Xc -Yc -Ba0.5f0.1 -BWSne+tAceh -K > $output
 ```
 
 |Attribute|Information|
 |--|--|
-| -J[Projection][size] | -J indicates to the projection map. There are two options of projection, Mercator (M) and Cartesian (X) |
+| -J[Projection][scale] | -J indicates to the projection map. There are two options of projection, Mercator (M) and Cartesian (X). The scale = X-scale/Y-scale |
 | -R[coordinate] | -R indicates to the coordinate that we use to create map. The coordinate format is min longitude/max longitude/min latitdue/max latitude |
 | -X[offset length/align] | -X indicates to the offset length in x-axis. You can adjust by its value or align format (c = center, a = shift the origin back to the original position after plotting, f = shift the origin relative to the fixed lower left, r = move the origin relative to its current location) |
 | -Y[offset length/align] | -Y indicates to the offset length in y-axis. You can adjust by its value or align format (c = center, a = shift the origin back to the original position after plotting, f = shift the origin relative to the fixed lower left, r = move the origin relative to its current location) |
@@ -204,6 +208,28 @@ To plot the symbol or line to a map, we use the logitude (x-axis) and latitude (
 | -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
 | >> | Append the commands to the output |
 
+## PSTEXT
+
+We can plot a text inside a map by using `pstext` command. For example
+
+```
+# author
+echo "95.7 4.5 Created by Aulia Khalqillah (2021)" | gmt pstext -R -JM -Bwesn -F+f7,black -K -O >> $output
+```
+
+|Attribute|Information|
+|--|--|
+|-F+f[size],color|Set a font size and its color|
+
+If you have a many texts want to be plotted, it could be done by using `awk` command
+
+```
+# author
+awk -F',' 'NR!=1 {print $3, $2-0.05, $5}' earthquake_aceh.csv | gmt pstext -R -JM -F+f7 -K -O >> $output 
+```
+
+note, the text has to be in a file. The example above, the texts are stored in file `earthquake_aceh.csv` in column of 5 ($5). The $3 and $2 are the coordinate of texts
+
 ## PSSCALE
 
 The `psscale` command is used to create a colorbar of a map based its color. We can type the following command to plot a colorbar
@@ -273,6 +299,10 @@ where the `-Tg` is for PNG fromat. You can use other formats from the following 
 | m | PPM |
 | s | SVG |
 | t | TIFF |
+
+## NOTE
+
+To get information for each layer, you could add the `-V` attribute in each layer like `-K -O -V >> $output`
 
 
 
