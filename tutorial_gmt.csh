@@ -12,17 +12,17 @@ set region=95/97/4/6
 set output=Aceh.ps
  
 # Generate base map
-gmt psbasemap -JM10/10 -R$region -Xc -Yc -Ba0.5f0.1 -BWesN+tAceh -V -K > $output
+gmt psbasemap -JM10/10 -R$region -Xc -Yc -Ba0.5f0.1 -BWesN+tAceh -K > $output
  
 # Plot grid image
-set grid=/mnt/d/GMT/GMTCODE/TUTORIAL/acehgrid.grd
-set grad=/mnt/d/GMT/GMTCODE/TUTORIAL/acehgrad.grad 
-set cpt=/mnt/d/GMT/GMTCODE/TUTORIAL/acehcolor.cpt
+set grid=/Volumes/DRIVE/GMT/Tutorial-GMT-6/acehgrid.grd
+set grad=/Volumes/DRIVE/GMT/Tutorial-GMT-6/acehgrad.grad 
+set cpt=/Volumes/DRIVE/GMT/Tutorial-GMT-6/acehcolor.cpt
  
 gmt grdimage $grid -I$grad -R -JM -C$cpt -K -O >> $output
  
 # Generate coast line of an area
-gmt pscoast -R -JM -Swhite -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -K -O >> $output
+gmt pscoast -R -JM -Swhite -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1+f1+l,,,N+o1.2/1.5 -K -O >> $output
  
 # Plot a multiple symbol
 awk -F',' 'NR!=1 {print $3, $2}' earthquake_aceh.csv | gmt psxy -R -JM -Sc0.5  -Wblack -Gred -K -O >> $output
