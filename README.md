@@ -163,7 +163,7 @@ Next, we plot a coastline of an area by using `pascoast` command as follows
 
 ```
 # Generate coast line of an area
-gmt pscoast -R -JM -Swhite -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1,,,N+f1+l+o1.2/1.5 -O -K -P >> $output
+gmt pscoast -R -JM -Swhite -Df -W0.02 -LjBL+c0+w50k+f+l+o1/1 -TdjTR+w1+f1+l,,,N+o1.2/1.5 -O -K -P >> $output
 ```
 
 The `pscoast` also provides the attributes to create a map scale with by using -Lj attribute and create wind direction by using -Tdj attribute. 
@@ -175,7 +175,8 @@ The `pscoast` also provides the attributes to create a map scale with by using -
 | -S[color] | Fill a color outside coastline |
 | -D[option] | Resolution of data where the options area are f = full, h = high, i = intermediate, l = low, and c = crude |
 | -W[size],[color] | Set shoreline color and size. Default color is black |
-| -Lj[position]+c[slon]+w[length][unit]+f+l+o[dx/dy] | To create amap scale. j = set position where the options are TR (Top Right), TL (Top Left), BL (Bottom Left) and BR (Bottom Right) <br/><br/> c[slon] or [slon/slong] = to specify scale origin for geographic projections, where the slat is latitude and the slong is longitude. <br/><br/> w = to specify scale length and its unit. The unit options are e=cm, f=feet, M=miles and k=Km <br/><br/> f = Create fancy map scale. The default scale is plain <br/><br/> l = create a label of map scale <br/><br/> o = set the ooffset of map scale in x-direction and y-direction |
+| -Lj[position]+c[slon]+w[length][unit]+f+l+o[dx/dy] | To create amap scale. j = set position where the options are TR (Top Right), TL (Top Left), BL (Bottom Left) and BR (Bottom Right) <br/><br/> c[slon] or [slon/slong] = to specify scale origin for geographic projections, where the slat is latitude and the slong is longitude. <br/><br/> w = to specify scale length and its unit. The unit options are e=cm, f=feet, M=miles and k=Km <br/><br/> f = Create fancy map scale. The default scale is plain <br/><br/> l = create a label of map scale <br/><br/> o = set the offset of map scale in x-direction and y-direction |
+| -Tdj[reference]+w[width]+f[font size]+l[lable]+o[dx/dy] | j = set reference position based on 2 char (TR = Top Right, TL = Top Left, BR = Bottom Right, BL = Botom Left) <br/><br/> w = set width of wind direction, <br/><br/> f= set font size <br/><br/> l = set lable of wind direction (W,E,S,N) <br/><br/> o = set offset by each direction dx and dy|
 | -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
 | -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
 | >> | Append the commands to the output |
