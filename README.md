@@ -175,12 +175,7 @@ The `pscoast` also provides the attributes to create a map scale with by using -
 | -S[color] | Fill a color outside coastline |
 | -D[option] | Resolution of data where the options area are f = full, h = high, i = intermediate, l = low, and c = crude |
 | -W[size],[color] | Set shoreline color and size. Default color is black |
-| -Lj[position]+c[slon]+w[length][unit]+f+l+o[dx/dy] | To create amap scale. j = set position where the options are TR (Top Right), TL (Top Left), BL (Bottom Left) and BR (Bottom Right) |
-|| c[slon] or [slon/slong] = to specify scale origin for geographic projections, where the slat is latitude and the slong is longitude.  |
-|| w = to specify scale length and its unit. The unit options are e=cm, f=feet, M=miles and k=Km |
-|| f = Create fancy map scale. The default scale is plain |
-|| l = create a label of map scale |
-|| o = set the ooffset of map scale in x-direction and y-direction |
+| -Lj[position]+c[slon]+w[length][unit]+f+l+o[dx/dy] | To create amap scale. j = set position where the options are TR (Top Right), TL (Top Left), BL (Bottom Left) and BR (Bottom Right) <br/><br/> c[slon] or [slon/slong] = to specify scale origin for geographic projections, where the slat is latitude and the slong is longitude. <br/><br/> w = to specify scale length and its unit. The unit options are e=cm, f=feet, M=miles and k=Km <br/><br/> f = Create fancy map scale. The default scale is plain <br/><br/> l = create a label of map scale <br/><br/> o = set the ooffset of map scale in x-direction and y-direction |
 | -O | Overlay attribute with the previous layer. **_Note: The -O is always written at the middle layer and the last layer of map_** |
 | -K | -K indicates to append all attributes to the output. **_Note: The -K is always written at the first layer and the middle layer of map_** |
 | >> | Append the commands to the output |
