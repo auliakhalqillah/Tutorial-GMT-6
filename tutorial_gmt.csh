@@ -3,8 +3,7 @@
 # GMT set/configuration
 gmt set MAP_FRAME_TYPE plain
 gmt set PS_MEDIA 500x500
-gmt set FONT 10p
-gmt set FONT_TITLE 15p
+gmt set FONT_TITLE 12p
  
 # Set a coordinate
 # region=min longitude/max longitude/min latitude/max latitude
